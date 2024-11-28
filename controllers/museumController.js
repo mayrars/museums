@@ -1,4 +1,4 @@
-const museumService = require("../../services/museumService")
+const museumService = require("../services/museumService")
 const getAllMuseums = (req, res) => {
     const allMuseums = museumService.getAllMuseums();
     res.send("Get all museums")
