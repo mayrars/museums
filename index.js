@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const v1MuseumsRouter = require("./v1/routes/museumsRouter");
 const mongose = require('mongoose');
 
