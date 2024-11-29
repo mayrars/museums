@@ -1,7 +1,15 @@
 const museumService = require("../services/museumService")
+const { createMuseumSchema } = require('../middlewares/validator');
+const Museum = require('../models/museumsModel')
 const getAllMuseums = (req, res) => {
-    const allMuseums = museumService.getAllMuseums();
-    res.send("Get all museums")
+    //const allMuseums = museumService.getAllMuseums();
+    const {page} = req.query
+    const museumsPerPage = 10
+    try{
+        res.send("Museums")
+    }catch(error){
+        console.log(error)
+    }
 }
 
 const getSingleMuseum = (req, res) => {
@@ -9,9 +17,26 @@ const getSingleMuseum = (req, res) => {
     res.send("Get museum")
 }
 
-const createMuseum = (req, res) => {
-    const cretedMuseum = museumService.createMuseum(req.params.id);
-    res.send("Create museum")
+const createMuseum = async(req, res) => {
+    const { name, address, description, image, latitud, longitud, city, country } = req.body;
+    try {
+		const { error, value } = createMuseumSchema.validate({
+			name, address, description, image, latitud, longitud, city, country
+		});
+		if (error) {
+			return res
+				.status(401)
+				.json({ success: false, message: error.details[0].message });
+		}
+
+		const result = await Museum.createMuseum({
+			name, address, description, image, latitud, longitud, city, country
+		});
+        result.save()
+		res.status(201).json({ success: true, message: 'created', data: result });
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 const updateMuseum = (req, res) => {
