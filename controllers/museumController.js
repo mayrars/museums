@@ -1,12 +1,18 @@
 const museumService = require("../services/museumService")
 const { createMuseumSchema } = require('../middlewares/validator');
 const Museum = require('../models/museumsModel')
-const getAllMuseums = (req, res) => {
+const getAllMuseums = async(req, res) => {
     //const allMuseums = museumService.getAllMuseums();
     const {page} = req.query
     const museumsPerPage = 10
     try{
-        res.send("Museums")
+        if(page<=1){
+            pageNum = 0
+        }else{
+            pageNum = page-1
+        }
+        const result = await Museum.find().sort({createdAt: -1}).skip(pageNum*museumsPerPage).limit(museumsPerPage)
+        res.status(200).json({success: true, message: 'Museums', data: result})
     }catch(error){
         console.log(error)
     }
