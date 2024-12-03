@@ -18,9 +18,17 @@ const getAllMuseums = async(req, res) => {
     }
 }
 
-const getSingleMuseum = (req, res) => {
-    const singleMuseum = museumService.getSingleMuseum(req.params.id);
-    res.send("Get museum")
+const getSingleMuseum = async (req, res) => {
+    const {_id} = req.query
+    try{
+        const singleMuseum = await Museum.findOne({_id})
+		if(!singleMuseum){
+			return res.status(404).json({success: false, message: 'museum is not find'})
+		}
+		res.status(200).json({success: true, message: 'Museums ', data: singleMuseum})
+    }catch(e){
+        console.log(e)
+    }
 }
 
 const createMuseum = async(req, res) => {
@@ -35,9 +43,10 @@ const createMuseum = async(req, res) => {
 				.json({ success: false, message: error.details[0].message });
 		}
 
-		const result = await Museum.createMuseum({
+		const result = await Museum.create({
 			name, address, description, image, latitud, longitud, city, country
 		});
+        console.log(result)
         result.save()
 		res.status(201).json({ success: true, message: 'created', data: result });
 	} catch (error) {
