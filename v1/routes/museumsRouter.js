@@ -3,8 +3,8 @@ const router = express.Router()
 const museumController = require("../../controllers/museumController")
 router
     .get('/',museumController.getAllMuseums)
-    .get('/:id',museumController.getSingleMuseum)
-    .post('/:id', museumController.createMuseum)
+    .get('/single-museum',museumController.getSingleMuseum)
+    .post('/', museumController.createMuseum)
     .put('/:id', museumController.updateMuseum)
     .delete('/:id',museumController.deleteMuseum)
 
