@@ -5,7 +5,7 @@ router
     .get('/',museumController.getAllMuseums)
     .get('/single-museum',museumController.getSingleMuseum)
     .post('/', museumController.createMuseum)
-    .put('/:id', museumController.updateMuseum)
+    .put('/update-museum', museumController.updateMuseum)
     .delete('/:id',museumController.deleteMuseum)
 
 
