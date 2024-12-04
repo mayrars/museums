@@ -1,5 +1,5 @@
 const museumService = require("../services/museumService")
-const { createMuseumSchema } = require('../middlewares/validator');
+const { createMuseumSchema, updateMuseumSchema } = require('../middlewares/validator');
 const Museum = require('../models/museumsModel')
 const getAllMuseums = async(req, res) => {
     //const allMuseums = museumService.getAllMuseums();
@@ -54,8 +54,36 @@ const createMuseum = async(req, res) => {
 	}
 }
 
-const updateMuseum = (req, res) => {
-    const updatedMuseum = museumService.updateMuseum(req.params.id);
+const updateMuseum = async(req, res) => {
+    const { name, address, description, image, latitud, longitud, city, country } = req.body;
+    const {_id} = req.query
+    try{
+        const {error, value} = updateMuseumSchema.validate({
+            name, address, description, image, latitud, longitud, city, country
+        })
+        if(error){
+            return res.status(401).json({success: false, message: error.details[0].message
+            })
+        }
+        //verify if exists
+        const existsMuseum = await Museum.findOne({ _id });
+        if(!existsMuseum){
+			return res.status(404).json({success: false, message: 'post unavailable'})
+		}
+        existsMuseum.name = name;
+		existsMuseum.address = address;
+		existsMuseum.description = description;
+		existsMuseum.image = image;
+		existsMuseum.latitud = latitud;
+		existsMuseum.longitud = longitud;
+		existsMuseum.city = city;
+		existsMuseum.country = country;
+		const result = await existsMuseum.save();
+        res.status(200).json({ success: true, message: 'Museum Updated', data: result });
+    }catch (error) {
+		console.log(error);
+	}
+
     res.send("Update museum")
 }
 
