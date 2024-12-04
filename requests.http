@@ -16,3 +16,19 @@ Content-Type: application/json
 ###
 GET http://localhost:8000/api/v1/museums/single-museum?_id=674ef127912f532ff894d25a HTTP/1.1
 Content-Type: application/json
+
+
+###
+PUT http://localhost:8000/api/v1/museums/update-museum?_id=674ef127912f532ff894d25a HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Museo de Arte Moderno cambiado",
+    "address": "Calle 1 # 2-3",
+    "description": "Museo de Arte Moderno",
+    "image": "https://www.museoarte.com.co/wp-content/uploads/2020/03/IMG_20200312_094748-1024x683.jpg",
+    "latitud": 4.6486,
+    "longitud": -74.2479,
+    "city": "Bogotá",
+    "country": "Colombia"
+}
