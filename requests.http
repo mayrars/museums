@@ -1,16 +1,21 @@
+### GEt all museums
+GET http://localhost:8000/api/v1/museums/ HTTP/1.1
+Content-Type: application/json
+
+
 ###
 POST http://localhost:8000/api/v1/museums/ HTTP/1.1
 Content-Type: application/json
 
 {
     "name": "Museo de Arte Moderno",
-    "address": "Calle 1 # 2-3",
+    "address": "Av. P.º de la Reforma s/n, Bosque de Chapultepec I Secc, Miguel Hidalgo, 11580 Ciudad de México, CDMX",
     "description": "Museo de Arte Moderno",
-    "image": "https://www.museoarte.com.co/wp-content/uploads/2020/03/IMG_20200312_094748-1024x683.jpg",
-    "latitud": 4.6486,
-    "longitud": -74.2479,
-    "city": "Bogotá",
-    "country": "Colombia"
+    "image": "https://www.museosdemexico.com/mam_58.html",
+    "latitud": 19.422201,
+    "longitud": -99.179488,
+    "city": "Mexico",
+    "country": "CDMX"
 }
 
 ###
@@ -19,16 +24,20 @@ Content-Type: application/json
 
 
 ###
-PUT http://localhost:8000/api/v1/museums/update-museum?_id=674ef127912f532ff894d25a HTTP/1.1
+PUT http://localhost:8000/api/v1/museums/update-museum?_id=6751919f88b15dda855793ff HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Museo de Arte Moderno cambiado",
-    "address": "Calle 1 # 2-3",
+    "name": "Museo de Arte Moderno",
+    "address": "Av. P.º de la Reforma s/n, Bosque de Chapultepec I Secc, Miguel Hidalgo, 11580 Ciudad de México, CDMX",
     "description": "Museo de Arte Moderno",
-    "image": "https://www.museoarte.com.co/wp-content/uploads/2020/03/IMG_20200312_094748-1024x683.jpg",
-    "latitud": 4.6486,
-    "longitud": -74.2479,
-    "city": "Bogotá",
-    "country": "Colombia"
+    "image": "https://lh5.googleusercontent.com/p/AF1QipO_oaL8PAVwELxqUIkmoIdfc7_cGTGyubOZ4LkR=w540-h312-n-k-no",
+    "latitud": 19.422201,
+    "longitud": -99.179488,
+    "city": "Mexico",
+    "country": "CDMX"
 }
+
+###
+DELETE http://localhost:8000/api/v1/museums/delete-museum?_id=674ef1fc912f532ff894d25e HTTP/1.1
+Content-Type: application/json
