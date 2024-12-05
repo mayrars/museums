@@ -22,10 +22,10 @@ exports.createMuseumSchema = Joi.object({
 		.min(-180)
 		.max(180),
     city: Joi.string()
-		.min(6)
+		.min(4)
 		.required(),
     country: Joi.string()
-		.min(6)
+		.min(4)
 		.required()
 })
 
@@ -52,9 +52,9 @@ exports.updateMuseumSchema = Joi.object({
 		.min(-180)
 		.max(180),
     city: Joi.string()
-		.min(6)
+		.min(4)
 		.required(),
     country: Joi.string()
-		.min(6)
+		.min(4)
 		.required()
 })
