@@ -83,13 +83,20 @@ const updateMuseum = async(req, res) => {
     }catch (error) {
 		console.log(error);
 	}
-
-    res.send("Update museum")
 }
 
-const deleteMuseum = (req, res) => {
-    museumService.deleteMuseum(req.params.id);
-    res.send("Delete museum")
+const deleteMuseum = async(req, res) => {
+    const {_id} = req.query
+    try {
+		const existsMuseum = await Museum.findOne({ _id });
+		if(!existsMuseum){
+			return res.status(404).json({success: false, message: 'Museums are not find'})
+		}
+		await Museum.deleteOne({_id})
+		res.status(200).json({ success: true, message: 'Museun deleted' });
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 module.exports = {
