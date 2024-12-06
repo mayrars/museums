@@ -7,6 +7,7 @@ router
     .post('/', museumController.createMuseum)
     .put('/update-museum', museumController.updateMuseum)
     .delete('/delete-museum',museumController.deleteMuseum)
+    .get('/search-museum',museumController.searchMuseum)
 
 
 module.exports = router
