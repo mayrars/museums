@@ -30,6 +30,49 @@ const getSingleMuseum = async (req, res) => {
     }
 }
 
+const getSearchMuseum = async (req, res) => {
+    try{
+        const query = req.query.q || '';
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const filter = {
+            name: req.query.name,
+            address: req.query.address,
+            description: req.query.description,
+            country: req.query.country,
+            city: req.query.city
+        }
+        const searchData = {}
+        if(query){
+            searchData.$text = {$search: query}
+        }
+        //Apply filters
+        if(filter.name) searchData.name = {$regex: filter.name, $options: 'i'};
+        if(filter.address) searchData.address = {$regex: filter.address, $options: 'i'};
+        if(filter.description) searchData.description = {$regex: filter.description, $options: 'i'};
+        if(filter.country) searchData.country = {$regex: filter.country, $options: 'i'};
+        if(filter.city) searchData.city = {$regex: filter.city, $options: 'i'};
+
+        const museums = await Museum.find(searchData)
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit)
+        const totalMuseums = await Museum.countDocuments(searchData);
+        res.status(200).json({
+            success: true,
+            message: 'Museums found',
+            data: museums,
+            total: totalMuseums,
+            page,
+            limit
+        })
+
+    }catch(error){
+        console.log(error)
+    }
+}
+
 const createMuseum = async(req, res) => {
     const { name, address, description, image, latitud, longitud, city, country } = req.body;
     try {
@@ -98,52 +141,10 @@ const deleteMuseum = async(req, res) => {
 	}
 }
 
-
-const searchMuseum = async(req, res) => {
-    try{
-        const query = req.query.q || '';
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-
-        const filter = {
-            name: req.query.name,
-            address: req.query.address,
-            description: req.query.description,
-            country: req.query.country,
-            city: req.query.city
-        }
-        const searchData = {}
-        if(query){
-            searchData.$text = {$search: query}
-        }
-        //Apply filters
-        if(filter.name) searchData.name = {$regex: filter.name, $options: 'i'};
-        if(filter.address) searchData.address = {$regex: filter.address, $options: 'i'};
-        if(filter.description) searchData.description = {$regex: filter.description, $options: 'i'};
-        if(filter.country) searchData.country = {$regex: filter.country, $options: 'i'};
-        if(filter.city) searchData.city = {$regex: filter.city, $options: 'i'};
-
-        const museums = await Museum.find(searchData)
-            .sort({ createdAt: -1 })
-            .skip((page - 1) * limit)
-            .limit(limit)
-        const totalMuseums = await Museum.countDocuments(searchData);
-        res.status(200).json({
-            success: true,
-            message: 'Museums found',
-            data: museums,
-            total: totalMuseums,
-            page,
-            limit
-        })
-
-    }catch(error){
-        console.log(error)
-    }
-}
 module.exports = {
     getAllMuseums,
     getSingleMuseum,
+    getSearchMuseum,
     createMuseum,
     updateMuseum,
     deleteMuseum
